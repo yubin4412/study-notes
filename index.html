@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>1회차 강의 질문 · 숙제</title>
 <meta property="og:title" content="1회차 강의 질문 · 숙제">
-<meta property="og:description" content="게임의 구조 · 플레이어 이해 — 강의 원문 질문과 숙제를 같이 쓰는 페이지">
+<meta property="og:description" content="게임의 구조 · 플레이어 이해 — 강의 원문 질문 · 나의 생각 · 아이핏 적용 · 숙제를 같이 쓰는 페이지">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -109,7 +109,7 @@ body.only-empty .topic.all-done{display:none}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px}
 @media (prefers-reduced-motion:reduce){.meter-fill{transition:none}}
-.tabs{display:flex;gap:4px;margin-right:auto}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-right:auto}
 .tab{font:500 14px var(--f-body);border:0;background:none;color:var(--muted);padding:6px 12px;border-radius:6px;cursor:pointer}
 .tab:hover{background:var(--moss-soft);color:var(--ink)}
 .tab[aria-selected="true"]{background:var(--moss);color:var(--paper)}
@@ -122,6 +122,8 @@ body.only-empty .topic.all-done{display:none}
 <div class="bar"><div class="bar-in">
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" data-view="pdf" aria-selected="true">강의 원문 질문</button>
+    <button class="tab" role="tab" data-view="me" aria-selected="false">나의 생각</button>
+    <button class="tab" role="tab" data-view="fit" aria-selected="false">아이핏 적용</button>
     <button class="tab" role="tab" data-view="hw" aria-selected="false">1회차 숙제</button>
   </div>
   <div class="meter"><div class="meter-track"><div class="meter-fill" id="fill"></div></div><span id="count">0 / 0</span></div>
@@ -165,7 +167,7 @@ const FULL=[
  {id:"1-1",title:"게임의 정의",sub:"학자들은 게임을 뭐라고 했나 (의역)",s:[T(["학자","분야","정의(의역)"],[["Huizinga","놀이 이론가","자발적이고, 일상과 구분된 시공간에서, 규칙에 따라 하는 활동"],["Bernard Suits","철학자","불필요한 장애물을 자발적으로 극복하려는 시도"],["Jesse Schell","게임 디자이너","놀이하는 태도로 접근하는 문제 해결 활동"]]),{k:"공통점: 자발성 · 규칙 · 도전(문제)"}],
   q:[["me","세 정의 중 내 생각에 가장 가까운 것과, 동의 안 하는 부분은?"],["me","내가 내리는 게임의 정의 한 문장은?"],["me","공통점 3개 외에 내가 추가하고 싶은 요소는?"],["fit","체험관 아이핏 공간은 '일상과 구분된 시공간'인가? 그걸 만드는 장치는? (조명·소리·입장 연출)"],["fit","줄 서서 차례가 와서 하는 상황에서도 자발성이 성립하나? 성립시키려면?"]]},
  {id:"1-2",title:"게임의 공통 요소 4가지",sub:"목표 · 규칙 · 피드백 · 자발적 참여",s:[T(["요소","뜻"],[["목표","플레이어가 무엇을 이루려 하는가"],["규칙","할 수 있는 것과 없는 것의 경계"],["피드백","행동의 결과를 플레이어에게 알려 줌"],["자발적 참여","하고 싶어서 한다는 것"]]),{k:"핵심 질문: 게임을 게임답게 만드는 최소 조건은?"}],
-  q:[["me","4개 중 하나를 빼야 한다면? 빼도 게임인가?"],["me","4개 중 기획할 때 가장 먼저 정하는 것은?"],["fit","목표는 몇 초 안에 알아야 하나? 글 없이 어떻게 알려 주나?"],["fit","'할 수 없는 것'을 몸으로 하는 게임에서 어떻게 막거나 알리나? (경계선·소리·벌점)"],["pdf","[핵심 질문] 게임을 게임답게 만드는 최소 조건은?","q1-2-k"]]},
+  q:[["me","4개 중 하나를 빼야 한다면? 빼도 게임인가?"],["me","4개 중 기획할 때 가장 먼저 정하는 것은?"],["fit","목표는 몇 초 안에 알아야 하나? 글 없이 어떻게 알려 주나?"],["fit","규칙상 '하면 안 되는 행동'을 플레이어가 했을 때, 게임은 그걸 어떻게 알려 줄까?","","예: 정해진 구역 밖으로 나감 · 다른 사람 자리로 들어감 → 바닥에 빨간 선이 보임 · 경고음 · 점수가 깎임 · 캐릭터가 잠깐 멈춤"],["pdf","[핵심 질문] 게임을 게임답게 만드는 최소 조건은?","q1-2-k"]]},
  {id:"1-3",title:"게임은 무엇이 다른가",sub:"장난감 · 퍼즐 · 이야기와의 비교",s:[T(["구분","목표","규칙","플레이어의 선택"],[["장난감","없음(자유 놀이)","없음","놀이 방식은 전부 플레이어 몫"],["퍼즐","있음(풀기)","정답이 정해짐","해법은 하나, 풀면 끝"],["이야기","작가가 정함","없음","감상만 한다"],["게임","있음","있음","선택이 결과를 바꿈"]]),{k:"선택 → 결과 → 다시 선택, 이 순환이 게임의 핵심"}],
   q:[["me","장난감·퍼즐·이야기 성격이 섞인 게임 중 좋아하는 것은? 무엇이 섞였나?"],["me","장난감 쪽으로 가도 괜찮은 순간 / 반드시 게임이어야 하는 순간은?"],["fit","몸으로 하는 게임에서 '선택'은 무엇인가? (어디로·언제·누구와·어떤 동작)"],["fit","대기 화면·로비는 장난감처럼 자유롭게 두는 게 맞나?"]]},
  {id:"1-4",title:"규칙의 세 종류 (Salen & Zimmerman)",sub:"Salen & Zimmerman의 규칙 분류 (의역)",s:[T(["종류","뜻","예 (체스)"],[["구성 규칙","게임의 뼈대가 되는 기본 규칙","말마다 움직이는 방법이 정해져 있다"],["운영 규칙","플레이어가 진행하며 실제로 따르는 규칙","흑과 백이 번갈아 한 수씩 둔다"],["암묵 규칙","문서에 없지만 모두가 지키는 매너","상대를 재촉하지 않는다"]]),{k:"기획서에는 구성·운영 규칙을 쓰고, 암묵 규칙은 플레이테스트에서 찾는다"}],
@@ -250,10 +252,12 @@ const FULL=[
 ];
 const LABEL={pdf:"강의 원문",me:"나의 생각",fit:"아이핏 적용",hw:"숙제"};
 FULL.forEach(c=>c.topics.forEach(t=>{let n=0;t.q=t.q.map(q=>{const fixed=q[2];if(!fixed)n++;return{kind:q[0],text:q[1],id:fixed||("q"+t.id+"-"+n),hint:q[3]||""}})}));
-// 탭 두 개: 강의 원문 질문(pdf 질문만) / 1회차 숙제(6장)
+// 탭: 강의 원문 질문 / 나의 생각 / 아이핏 적용 (숙제 장 빼고 질문 종류별) · 1회차 숙제(6장)
+const byKind=k=>FULL.filter(c=>!c.hw).map(c=>({...c,topics:c.topics.map(t=>({...t,q:t.q.filter(q=>q.kind===k)})).filter(t=>t.q.length)})).filter(c=>c.topics.length);
 const VIEWS={
-  pdf:{title:"강의 원문 질문만 모아 보기",lead:"1회차 PDF의 연습 · 핵심 질문 · 실습만 모았습니다. 주제마다 강의 정리를 같이 두었으니 읽고 바로 답을 적어 보세요.",
-    data:FULL.filter(c=>!c.hw).map(c=>({...c,topics:c.topics.map(t=>({...t,q:t.q.filter(q=>q.kind==="pdf")})).filter(t=>t.q.length)})).filter(c=>c.topics.length)},
+  pdf:{title:"강의 원문 질문만 모아 보기",lead:"1회차 PDF의 연습 · 핵심 질문 · 실습만 모았습니다. 주제마다 강의 정리를 같이 두었으니 읽고 바로 답을 적어 보세요.",data:byKind("pdf")},
+  me:{title:"강의 이론에 대한 내 생각",lead:"강의 내용을 내 말로 풀어 보도록 추가한 질문만 모았습니다. 주제마다 강의 정리를 같이 두었습니다.",data:byKind("me")},
+  fit:{title:"강의 개념을 아이핏에 적용하기",lead:"강의 개념을 아이핏(체감형 · 체험관)에 적용해 보도록 추가한 질문만 모았습니다. 주제마다 강의 정리를 같이 두었습니다.",data:byKind("fit")},
   hw:{title:"1회차 숙제",lead:"과제 1 · 대표작 코어 메카닉 · 루프 도식, 과제 2 · 최근 플레이한 게임 분석 노트(A4 반 장). 다 쓰고 제출 전 점검까지 확인하세요.",
     data:FULL.filter(c=>c.hw)}
 };
@@ -302,6 +306,7 @@ document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
   history.replaceState(null,"","#"+b.dataset.view);setView(b.dataset.view);window.scrollTo(0,0);
 }));
 setView(location.hash.slice(1));
+window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(VIEWS[v]&&v!==view){setView(v);window.scrollTo(0,0)}});
 
 const saveEl=document.getElementById("save");
 // 공유 저장: Supabase의 study_answers(page, qid, body)가 기준(링크 가진 사람 모두 같이 고침).
