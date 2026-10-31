@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>1회차 강의 질문 · 숙제</title>
+<meta property="og:title" content="1회차 강의 질문 · 숙제">
+<meta property="og:description" content="게임의 구조 · 플레이어 이해 — 강의 원문 질문과 숙제를 같이 쓰는 페이지">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* 레이아웃: 왼쪽 목차(진행도) + 오른쪽 학습 노트. 각 주제 = 정리(표) → 질문(답 입력). 정글 탐험 기획 노트 느낌의 이끼색 + 금빛 */
+:root{
+  --bg:#f2f4ee; --paper:#fbfcf8; --ink:#1d2a22; --muted:#5d6b62; --line:#d6dccf;
+  --moss:#2f5d46; --moss-soft:#e1ebe3; --gold:#a8730f; --gold-soft:#f6ecd6;
+  --sky:#2b5d8a; --sky-soft:#e1ebf4; --plum:#6a4a86; --plum-soft:#ece4f3;
+  --field:#ffffff;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101814; --paper:#16211b; --ink:#e4ebe5; --muted:#9aa89f; --line:#2a3a31;
+  --moss:#7fc29b; --moss-soft:#1f3328; --gold:#e3b04f; --gold-soft:#33291a;
+  --sky:#8dbbe6; --sky-soft:#1b2a38; --plum:#c3a5e0; --plum-soft:#2a2135; --field:#0f1712; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101814; --paper:#16211b; --ink:#e4ebe5; --muted:#9aa89f; --line:#2a3a31;
+  --moss:#7fc29b; --moss-soft:#1f3328; --gold:#e3b04f; --gold-soft:#33291a;
+  --sky:#8dbbe6; --sky-soft:#1b2a38; --plum:#c3a5e0; --plum-soft:#2a2135; --field:#0f1712; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar-title{font-family:var(--f-display);font-size:18px;letter-spacing:.01em;margin-right:auto}
+.meter{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter-track{width:120px;height:6px;border-radius:3px;background:var(--moss-soft);overflow:hidden}
+.meter-fill{height:100%;background:var(--gold);width:0;transition:width .3s}
+.save{font-size:12px;color:var(--muted)}
+.btn{font:500 13px var(--f-body);border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--moss)}
+.btn[aria-pressed="true"]{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+.btn:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.head{padding-block:40px 28px;display:grid;gap:12px;max-width:780px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0}
+.rules,.legend{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0;padding:0;list-style:none}
+.rules li{font-size:13px;background:var(--gold-soft);color:var(--ink);padding:4px 10px;border-radius:4px}
+.legend li{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+
+.grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:40px;align-items:start}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);display:grid;gap:2px;font-size:14px}
+.toc a{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none}
+.toc a:hover{background:var(--moss-soft)}
+.toc a.hw{color:var(--plum);font-weight:700}
+.toc .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.toc a.full .n{color:var(--moss)}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.toc{position:static;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding-bottom:8px;border-bottom:1px solid var(--line)}}
+
+.chapter{display:grid;gap:22px;padding-top:16px;scroll-margin-top:72px}
+.ch-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.ch-no{font-family:var(--f-mono);font-size:13px;color:var(--gold)}
+.ch-head h2{font-family:var(--f-display);font-weight:400;font-size:26px;margin:0}
+.chapter.homework .ch-head{border-color:var(--plum)}
+.chapter.homework .ch-no{color:var(--plum)}
+.chapters{display:grid;gap:56px}
+
+.topic{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.homework .topic{border-color:var(--plum)}
+.t-head{padding:16px 20px 0;display:grid;gap:2px}
+.t-row{display:flex;gap:10px;align-items:baseline}
+.t-id{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.t-head h3{margin:0;font-size:18px;font-weight:700;text-wrap:balance}
+.t-sub{margin:0;font-size:13px;color:var(--muted)}
+.summary{padding:12px 20px 18px;display:grid;gap:10px}
+.summary p{margin:0}
+.key{border-left:3px solid var(--gold);padding:2px 0 2px 12px;font-weight:500}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.04em;color:var(--muted);font-weight:500;background:var(--bg)}
+td:first-child{font-weight:500;white-space:nowrap}
+
+.qs{border-top:1px dashed var(--line);background:var(--bg);padding:14px 20px 18px;display:grid;gap:14px}
+.qs:empty{display:none}
+.q{display:grid;gap:6px}
+.q-top{display:flex;gap:8px;align-items:baseline}
+.tag{flex:none;font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.02em}
+.tag.pdf{background:var(--sky-soft);color:var(--sky)}
+.tag.me{background:var(--moss-soft);color:var(--moss)}
+.tag.fit{background:var(--gold-soft);color:var(--gold)}
+.tag.hw{background:var(--plum-soft);color:var(--plum)}
+.q-text{font-weight:500}
+.q-hint{font-size:13px;color:var(--muted);margin:0}
+.q.done .q-text::after{content:"  ✓";color:var(--moss)}
+textarea{width:100%;min-height:64px;resize:vertical;font:15px/1.6 var(--f-body);color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+textarea.long{min-height:220px}
+.q.done textarea{border-color:var(--moss)}
+body.only-empty .q.done{display:none}
+body.only-empty .topic.all-done{display:none}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.meter-fill{transition:none}}
+.tabs{display:flex;gap:4px;margin-right:auto}
+.tab{font:500 14px var(--f-body);border:0;background:none;color:var(--muted);padding:6px 12px;border-radius:6px;cursor:pointer}
+.tab:hover{background:var(--moss-soft);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--moss);color:var(--paper)}
+.tab[data-view="hw"][aria-selected="true"]{background:var(--plum)}
+@media (max-width:600px){.bar{position:static}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-view="pdf" aria-selected="true">강의 원문 질문</button>
+    <button class="tab" role="tab" data-view="hw" aria-selected="false">1회차 숙제</button>
+  </div>
+  <div class="meter"><div class="meter-track"><div class="meter-fill" id="fill"></div></div><span id="count">0 / 0</span></div>
+  <span class="save" id="save">불러오는 중</span>
+  <button class="btn" id="filter" aria-pressed="false">안 쓴 것만</button>
+  <button class="btn" id="copy">노션용 복사</button>
+</div></div>
+
+<div class="wrap">
+  <header class="head">
+    <div class="eyebrow">Game Design Class · 1회차 · 게임의 구조 · 플레이어 이해</div>
+    <h1 id="h1"></h1>
+    <p class="lead" id="lead"></p>
+    <ul class="rules"><li>"그냥 재밌다" 금지, 개념 언어로 이유 쓰기</li><li>답마다 예시 게임 1개</li><li>이론에 반대해도 됨, 이유만</li></ul>
+    <ul class="legend" hidden>
+      <li><span class="tag pdf">강의 원문</span>PDF의 연습·핵심 질문 그대로</li>
+      <li><span class="tag me">나의 생각</span>강의 내용을 내 말로 풀도록 추가한 질문</li>
+      <li><span class="tag fit">아이핏 적용</span>강의 개념을 아이핏에 적용하도록 추가한 질문</li>
+    </ul>
+  </header>
+  <div class="grid">
+    <nav class="toc" id="toc" aria-label="목차"></nav>
+    <main class="chapters" id="main"></main>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const T=(h,rows)=>({t:h,rows});
+// 질문: [종류, 문장, 고정id?, 안내?]. 고정id가 없으면 주제id-순번(예전 저장 답과 맞추기 위해 순서 유지)
+const FULL=[
+{no:"0",title:"나의 출발점",topics:[
+ {id:"0-1",title:"오늘의 목표",s:[{k:"게임을 코어 루프 · 규칙 · 피드백 구조로 분해하고, 플레이어 동기로 재미를 설명한다"},{p:"이론 90분 + 포트폴리오 30분"},
+  T(["시간","내용","세부"],[["0–10분","오리엔테이션 10분","진단 질문"],["10–50분","개념 설명 40분","구조 20분 · 플레이어 20분"],["50–65분","문서 작성법 15분","별도 자료"],["65–80분","사례 분석 15분","게임 2개 해체"],["80–90분","실습 10분","내 게임 도식화"],["90–120분","포트폴리오 30분","프로젝트 점검"]]),
+  T(["챕터","제목","내용"],[["ch.1","게임의 구조 — 정의와 구조","게임의 공통 요소 · 플레이 흐름 · 피드백"],["ch.2","메카닉 · 루프 — 루프와 재미","코어 메카닉 · 루프 · 재미의 종류"],["ch.3","플레이어 이해 — 플레이어","MDA · Bartle · 자기결정이론 · Flow"],["ch.4","사례 · 실습 — 적용","게임 2개 해체 · 내 게임 도식화"]]),
+  {k:"오늘의 질문: 어떤 구조가, 어떤 플레이어에게, 어떤 재미를 주는가?"}],q:[]},
+ {id:"0-2",title:"오리엔테이션: 나의 출발점",sub:"학생의 현재 언어 수준과 입시 일정 확인 (10분)",s:[T(["입시 일정 체크","내용"],[["전형 유형","수시 · 정시"],["제출 마감일",""],["면접 · 과제 일정",""],["현재 포트폴리오 상태",""]]),{k:"관찰 포인트: \"그냥 재밌어요\" → \"목표가 분명하고 보상이 빨라서\""}],
+  q:[["pdf","가장 오래 플레이한 게임과 그 이유는?","q0-1"],["pdf","'재밌다'를 한 문장으로 설명하면?","q0-2"],["pdf","지금까지 만들어 본 프로젝트는?","q0-3"]]}
+]},
+{no:"1",title:"게임의 정의와 구조",topics:[
+ {id:"1-1",title:"게임의 정의",sub:"학자들은 게임을 뭐라고 했나 (의역)",s:[T(["학자","분야","정의(의역)"],[["Huizinga","놀이 이론가","자발적이고, 일상과 구분된 시공간에서, 규칙에 따라 하는 활동"],["Bernard Suits","철학자","불필요한 장애물을 자발적으로 극복하려는 시도"],["Jesse Schell","게임 디자이너","놀이하는 태도로 접근하는 문제 해결 활동"]]),{k:"공통점: 자발성 · 규칙 · 도전(문제)"}],
+  q:[["me","세 정의 중 내 생각에 가장 가까운 것과, 동의 안 하는 부분은?"],["me","내가 내리는 게임의 정의 한 문장은?"],["me","공통점 3개 외에 내가 추가하고 싶은 요소는?"],["fit","체험관 아이핏 공간은 '일상과 구분된 시공간'인가? 그걸 만드는 장치는? (조명·소리·입장 연출)"],["fit","줄 서서 차례가 와서 하는 상황에서도 자발성이 성립하나? 성립시키려면?"]]},
+ {id:"1-2",title:"게임의 공통 요소 4가지",sub:"목표 · 규칙 · 피드백 · 자발적 참여",s:[T(["요소","뜻"],[["목표","플레이어가 무엇을 이루려 하는가"],["규칙","할 수 있는 것과 없는 것의 경계"],["피드백","행동의 결과를 플레이어에게 알려 줌"],["자발적 참여","하고 싶어서 한다는 것"]]),{k:"핵심 질문: 게임을 게임답게 만드는 최소 조건은?"}],
+  q:[["me","4개 중 하나를 빼야 한다면? 빼도 게임인가?"],["me","4개 중 기획할 때 가장 먼저 정하는 것은?"],["fit","목표는 몇 초 안에 알아야 하나? 글 없이 어떻게 알려 주나?"],["fit","'할 수 없는 것'을 몸으로 하는 게임에서 어떻게 막거나 알리나? (경계선·소리·벌점)"],["pdf","[핵심 질문] 게임을 게임답게 만드는 최소 조건은?","q1-2-k"]]},
+ {id:"1-3",title:"게임은 무엇이 다른가",sub:"장난감 · 퍼즐 · 이야기와의 비교",s:[T(["구분","목표","규칙","플레이어의 선택"],[["장난감","없음(자유 놀이)","없음","놀이 방식은 전부 플레이어 몫"],["퍼즐","있음(풀기)","정답이 정해짐","해법은 하나, 풀면 끝"],["이야기","작가가 정함","없음","감상만 한다"],["게임","있음","있음","선택이 결과를 바꿈"]]),{k:"선택 → 결과 → 다시 선택, 이 순환이 게임의 핵심"}],
+  q:[["me","장난감·퍼즐·이야기 성격이 섞인 게임 중 좋아하는 것은? 무엇이 섞였나?"],["me","장난감 쪽으로 가도 괜찮은 순간 / 반드시 게임이어야 하는 순간은?"],["fit","몸으로 하는 게임에서 '선택'은 무엇인가? (어디로·언제·누구와·어떤 동작)"],["fit","대기 화면·로비는 장난감처럼 자유롭게 두는 게 맞나?"]]},
+ {id:"1-4",title:"규칙의 세 종류 (Salen & Zimmerman)",sub:"Salen & Zimmerman의 규칙 분류 (의역)",s:[T(["종류","뜻","예 (체스)"],[["구성 규칙","게임의 뼈대가 되는 기본 규칙","말마다 움직이는 방법이 정해져 있다"],["운영 규칙","플레이어가 진행하며 실제로 따르는 규칙","흑과 백이 번갈아 한 수씩 둔다"],["암묵 규칙","문서에 없지만 모두가 지키는 매너","상대를 재촉하지 않는다"]]),{k:"기획서에는 구성·운영 규칙을 쓰고, 암묵 규칙은 플레이테스트에서 찾는다"}],
+  q:[["me","내 기획서에서 구성 규칙과 운영 규칙을 구분해 쓰고 있나?"],["me","플레이테스트에서 발견한 암묵 규칙 경험이 있나?"],["fit","체험관 암묵 규칙(밀지 않기·차례 지키기·다 하면 비켜 주기)은? 게임이 어떻게 도와야 하나?"],["fit","규칙 설명 방법(글·음성·시연·따라하기) 중 기본값과, 규칙 개수 한계는?"]]},
+ {id:"1-5",title:"게임 요소 분해 연습",sub:"테트리스를 목표 · 규칙 · 피드백 · 선택 · 도전으로 나눠 보기",s:[T(["요소","테트리스 예시"],[["목표","줄을 지워 점수를 얻고 오래 버틴다"],["규칙","블록이 내려오고, 줄이 가득 차면 사라지며, 쌓임이 꼭대기에 닿으면 끝난다"],["피드백","줄이 사라지는 효과 · 점수 · 속도 변화"],["선택","블록을 어디에 어떻게 돌려 놓을지"],["도전","레벨이 오를수록 블록이 빨리 떨어진다"]])],
+  q:[["pdf","[연습] 좋아하는 게임 하나를 같은 표로 분해해 보세요"],["fit","정글 보물 탐험대를 같은 표로 분해하기"]]},
+ {id:"1-6",title:"플레이 흐름 (Play Flow)",sub:"행동 → 반응 → 인지 → 다음 행동",s:[T(["단계","뜻","예"],[["행동","플레이어 버튼 입력","점프 버튼을 누른다"],["반응","시스템 처리 · 판정","캐릭터가 뛰고 충돌을 판정한다"],["인지","결과를 화면 · 소리로 확인","착지 성공 · 실패를 눈으로 확인한다"],["다음 행동","결정","–"]]),{k:"포인트: 3단계 중 하나라도 막히면 게임이 답답해진다"}],
+  q:[["me","답답했던 게임 경험은 어느 단계가 막혔던 것인가?"],["fit","체감형에서 가장 잘 막히는 단계는? (센서 지연 = 반응, 화면을 안 봄 = 인지)"],["fit","센서가 인식을 못 했을 때 플레이어에게 무엇을 보여 줘야 하나? (억울함 처리)"],["fit","바닥을 보며 뛰는 중에 정면 화면 정보를 인지할 수 있나? 정보를 어디에 둘까?"]]},
+ {id:"1-7",title:"피드백의 종류",sub:"시점(즉각 · 지연) × 성격(정보성 · 보상성)",s:[T(["","정보성","보상성"],[["즉각","타격음 · 데미지 숫자 → 지금 무슨 일이 일어났는지 알려 줌","코인 획득 이펙트 → 기분 좋은 반응으로 행동을 강화"],["지연","결과 화면 · 랭킹 · 통계 → 내 플레이를 돌아보게 함","레벨업 · 시즌 보상 → 장기 목표를 향한 동기 부여"]])],
+  q:[["me","내가 가장 중요하게 여기는 칸은? 이유는?"],["me","정보성 없이 보상성만 있는 피드백은 괜찮은가?"],["fit","한 판짜리 체험에서 '지연' 칸은 무엇으로 채우나? (결과 화면·사진·기록)"],["fit","피드백 위치 우선순위: 정면 화면 / 바닥 / 소리 / 조명?"]]},
+ {id:"1-8",title:"피드백 설계 원칙",sub:"약한 피드백과 좋은 피드백 비교",s:[T(["원칙","약한 피드백","좋은 피드백"],[["빠르게 · 분명하게","공격이 맞았는지 알 수 없다","타격음 · 숫자 · 화면 흔들림이 즉시 나온다"],["이유를 알려 준다","\"실패\" 문구만 뜬다","어디서 왜 실패했는지 보여 준다"],["다음 행동으로 잇는다","숫자만 조용히 오른다","획득 연출과 다음 목표를 함께 보여 준다"]]),{k:"피드백은 빠르게, 분명하게, 다음 행동으로 이어지게"}],
+  q:[["me","세 원칙 중 가장 자주 놓치는 것은?"],["fit","아이에게 실패 이유를 보여 주는 게 맞나, 그냥 넘어가는 게 맞나?"],["fit","'다음 행동으로 잇기'를 바닥 투사로 하면? (다음 발판이 빛남 등)"]]}
+]},
+{no:"2",title:"코어 메카닉 · 루프 · 재미",topics:[
+ {id:"2-1",title:"코어 메카닉",sub:"플레이어가 가장 자주 하는 핵심 행동과 그 규칙",s:[T(["층","뜻"],[["코어 메카닉","핵심 행동 한 번"],["코어 루프","행동이 반복되는 사이클"],["메타 루프","장기 성장 · 수집"]]),T(["게임","코어 메카닉","루프"],[["슈퍼 마리오","점프","장애물을 넘는 루프"],["테트리스","블록 회전 · 배치","줄을 지우는 루프"],["슬레이 더 스파이어","카드 사용","전투를 이기는 루프"]]),{k:"찾는 법: 게임을 동사 한 단어로 말해 보기 (점프한다 · 조합한다 · 카드를 낸다)"},
+  T(["게임","코어 메카닉(동사)","한 줄 설명"],[["슈퍼 마리오","점프한다","타이밍에 맞춰 장애물과 적을 넘는다"],["테트리스","회전 · 배치한다","떨어지는 블록을 맞춰 줄을 만든다"],["마인크래프트","캔다 · 만든다","자원을 모아 도구와 건물을 만든다"],["슬레이 더 스파이어","카드를 낸다","에너지 안에서 카드를 골라 적과 싸운다"],["리듬 게임","박자에 맞춰 누른다","정확도에 따라 점수가 달라진다"]])],
+  q:[["pdf","[연습] 내가 가장 오래 한 게임의 코어 메카닉을 동사 한 단어로"],["me","좋은 코어 메카닉의 조건을 내 말로 정의하면? (단순함·손맛·깊이 …)"],["fit","정글 보물 탐험대의 동사 한 단어는?"],["fit","몸으로 하는 게임에 잘 맞는 동사 / 안 맞는 동사는? (밟는다·피한다·뻗는다·모인다·멈춘다)"],["fit","센서가 잘 잡는 동작과 재미있는 동작이 다를 때 무엇을 우선하나?"]]},
+ {id:"2-2",title:"메카닉 변주",sub:"같은 메카닉으로 다른 경험을 만드는 법",s:[{k:"메카닉은 그대로 두고, 상황을 바꿔 새로운 경험을 만든다"},T(["방법","뜻","예"],[["상황을 바꾼다","지형 · 적 · 환경이 달라진다","같은 점프도 구덩이와 적이 바뀐다"],["제약을 더한다","시간 · 횟수 · 자원을 제한한다","제한 시간 안에 점프로 도착"],["다른 메카닉과 합친다","두 메카닉이 서로 영향을 준다","점프 + 움직이는 발판"]])],
+  q:[["me","세 방법 중 내가 선호하는 것은?"],["pdf","[연습] 내 게임의 메카닉에 세 가지 방법을 하나씩 적용해 보기"],["fit","체감형에서 '제약 더하기'의 안전 한계는? (속도·점프 횟수·연속 시간)"],["fit","여러 명이 있다는 것 자체를 변주로 쓸 수 있나? (함께 밟아야 열림 등)"]]},
+ {id:"2-3",title:"코어 루프",sub:"플레이어가 가장 자주 반복하는 행동 사이클",s:[T(["항목","내용"],[["정의","플레이어가 가장 자주 반복하는 행동 사이클"],["그리는 법","5단계 이내로 단순화 · 화살표로 흐름 표시"],["확인 질문","한 바퀴가 끝나면 또 하고 싶은가?"]]),T(["탐색","→ 전투","→ 보상","→ 강화","→ 반복"],[["목표 찾기","적과 교전","재화 · 장비 획득","스탯 · 스킬 성장","다시 탐색"]]),{k:"예시: 탐색 → 전투 → 보상 → 강화 → (다시) 탐색"}],
+  q:[["me","좋아하는 게임의 코어 루프를 5단계로 그리기"],["me","'또 하고 싶다'를 만드는 가장 큰 요인은? (보상·변주·짧음·아쉬움)"],["fit","내 게임 코어 루프: 행동 → 반응 → 보상 → 다음 동기 (5단계 이내)"],["fit","한 바퀴의 적절한 길이는 몇 초? 한 판에 몇 바퀴?"],["pdf","[확인 질문] 한 바퀴가 끝나면 또 하고 싶은가?","q2-3-k"]]},
+ {id:"2-4",title:"코어 루프와 메타 루프",sub:"단기 사이클과 장기 사이클의 관계 — 메타 루프(성장·수집·시즌·랭크)가 코어 루프(전투 한 판·한 스테이지)를 감싼다",s:[T(["","단위","예"],[["코어 루프","초~분 단위 · 가장 자주 반복","전투 → 보상 → 강화"],["메타 루프","시간~주 단위 · 장기 목표","캐릭터 육성 · 도감 · 시즌 패스"]])],
+  q:[["me","메타 루프 때문에 계속한 게임 / 메타 루프가 오히려 싫었던 게임은?"],["fit","한 번 하고 가는 체험관 게임에 메타 루프가 필요한가?"],["fit","필요하다면 무엇으로? (재방문 도장·사진·이름 기록·오늘의 랭킹·스테이지 해금)"],["fit","한 판 안의 '작은 메타 루프'(스테이지 1→2→3)로 대신할 수 있나?"]]},
+ {id:"2-5",title:"좋은 루프의 조건",sub:"도식화 표기법도 함께 익히기",s:[T(["조건","뜻"],[["변주","상황이 달라져 질리지 않는다"],["의미 있는 보상","보상이 다음 행동에 영향을 준다"],["적절한 템포","한 바퀴 길이가 플레이 맥락에 맞는다"]]),T(["도식화 표기","뜻"],[["행동","플레이어 행동"],["시스템","반응 · 보상"],["흐름 (→)","다음 단계로"]])],
+  q:[["me","세 조건 중 가장 중요한 것은? 추가할 조건은?"],["fit","짧은 게임에서 '다음 행동에 영향을 주는 보상'은? (파워업·길이 열림·속도 업)"],["fit","체험관 맥락(대기줄·체력·몇 분 체험)에 맞는 템포는?"]]},
+ {id:"2-6",title:"루프가 망가지는 경우",sub:"원인과 고치는 방향 네 가지",s:[T(["문제","증상","고치는 방향"],[["루프가 너무 길다","보상까지 오래 걸려 중간에 이탈한다","중간 목표와 작은 보상을 넣는다"],["보상이 약하다","해도 달라지는 게 없다","다음 행동에 영향을 주는 보상으로"],["변주가 없다","같은 상황이 반복되어 질린다","상황 · 적 · 제약을 바꿔 준다"],["보상이 행동과 무관하다","무엇이 보상을 만들었는지 모른다","행동과 보상의 인과를 연출로 보여 준다"]])],
+  q:[["pdf","[연습] 내가 그만둔 게임은 네 가지 중 어디에 해당했나?"],["fit","내 게임에서 가장 일어나기 쉬운 망가짐은? 미리 막는 방법은?"],["fit","여러 명이 동시에 할 때 '누가 보상을 만들었는지' 어떻게 보여 주나? (플레이어 색·번호)"]]},
+ {id:"2-7",title:"재미의 종류 — 4 Keys to Fun (Nicole Lazzaro)",sub:"한 게임에도 여러 재미가 섞여 있다, 중심을 고르자",s:[T(["재미","핵심","뜻","예"],[["Hard Fun","도전과 극복","어려운 목표를 해내는 성취감","보스전 · 하드 모드"],["Easy Fun","호기심과 탐험","새로운 것을 발견하는 즐거움","오픈월드 · 샌드박스"],["People Fun","사람과의 교류","함께하고 겨루는 즐거움","협동 플레이 · 파티 게임"],["Serious Fun","의미와 변화","플레이로 얻는 가치와 감정 변화","서사 중심 게임"]]),T(["게임","중심 재미","함께 있는 재미"],[["슈퍼 마리오","Hard Fun","Easy Fun (스테이지 탐험)"],["슬레이 더 스파이어","Hard Fun","Easy Fun (덱 조합 탐색)"],["마인크래프트","Easy Fun","People Fun (함께 만들기)"],["어몽 어스","People Fun","Hard Fun (추리 · 설득)"],["클래시 로얄","Hard Fun","People Fun (상대와 대전)"]]),{k:"예시 분류 · 정답은 없고 근거가 중요하다. 중심 재미가 달라지면 설계 기준도 달라진다"}],
+  q:[["me","플레이어로서 좋아하는 재미 vs 기획자로서 만들고 싶은 재미는? 다르면 왜?"],["me","좋아하는 게임 3개를 중심/함께 재미로 분류하고 근거 쓰기"],["fit","내 게임의 중심 재미 1개 + 함께 있는 재미 1개, 근거는? (위 게임×재미 표 방식)"],["fit","아이핏에서 People Fun은 기본값이어야 하나?"],["fit","Serious Fun(의미·변화)을 체험관 게임에 넣을 수 있나? (환경·협동·자신감)"],["pdf","[핵심 질문] 내 게임의 재미는 어느 유형인가?","q2-7-k"]]}
+]},
+{no:"3",title:"플레이어 이해",topics:[
+ {id:"3-1",title:"왜 플레이어를 이해하나",sub:"같은 게임도 사람마다 다른 재미를 찾는다",s:[T(["이유","뜻"],[["사람마다 다르다","같은 게임에서 서로 다른 재미를 찾는다"],["재미는 경험이다","규칙이 아니라 플레이어가 느끼는 것이다"],["기준이 생긴다","타깃을 정해야 무엇을 넣고 뺄지 정한다"]]),{k:"핵심 질문: 내 게임의 플레이어는 누구이고, 무엇을 느끼길 바라는가?"}],
+  q:[["me","'재미는 규칙이 아니라 경험'에 동의하나? 기획자가 통제할 수 있는 범위는?"],["fit","내 게임 플레이어: 나이 / 누구와 오나 / 몇 명 / 게임 경험 수준"],["fit","플레이하는 아이와 지켜보는 부모 중 1순위 타깃은? 둘째는 어떻게 챙기나?"],["pdf","[핵심 질문] 내 게임의 플레이어는 누구이고, 무엇을 느끼길 바라는가?","q3-1-k"]]},
+ {id:"3-2",title:"MDA 프레임워크",sub:"Hunicke · LeBlanc · Zubek (2004)",s:[T(["층","뜻","예"],[["Mechanics 메카닉","규칙 · 데이터 · 알고리즘","점프 높이 · 중력 값"],["Dynamics 다이내믹스","플레이 중 일어나는 행동","아슬아슬하게 피하는 플레이"],["Aesthetics 미학","플레이어가 느끼는 감정","짜릿함 · 성취감"]]),{p:"디자이너의 시선 → (M → D → A) / 플레이어의 시선 ← (A → D → M)"},{k:"디자이너가 만지는 것은 메카닉, 플레이어가 받는 것은 미학"}],
+  q:[["me","기획할 때 M(규칙)부터 / A(감정)부터 / 장면(그림)부터 — 어디서 출발하나? 좋은 습관이라고 보나?"],["me","의도한 미학과 실제 다이내믹스가 달랐던 경험은?"],["fit","센서 값(인식 범위·판정 거리·지연)도 메카닉이다. 기획자가 정해야 하나, 개발에 맡기나?"]]},
+ {id:"3-3",title:"MDA의 8가지 미학",sub:"플레이어가 느끼는 재미를 여덟 가지로 나눈다",s:[T(["미학","한 줄 의미","잘 어울리는 예"],[["Sensation 감각","보고 듣는 즐거움","화려한 연출 · 음악"],["Fantasy 환상","다른 존재가 되는 즐거움","역할 수행 게임"],["Narrative 서사","이야기를 따라가는 즐거움","스토리 중심 게임"],["Challenge 도전","장애물을 넘는 즐거움","고난도 액션 · 퍼즐"],["Fellowship 교류","함께하는 즐거움","협동 · 파티 게임"],["Discovery 발견","미지를 탐험하는 즐거움","오픈월드 · 탐험"],["Expression 표현","자기를 드러내는 즐거움","꾸미기 · 창작"],["Submission 휴식","편하게 시간을 보내는 즐거움","가벼운 퍼즐 · 방치형"]])],
+  q:[["me","내 게임에 늘 들어가는 미학 / 절대 중심에 두지 않는 미학은?"],["fit","내 게임 미학 1~3순위와 이유"],["fit","체감형에서 Sensation(몸·빛·소리)과 Fantasy(탐험가가 됨)는 기본값인가?"]]},
+ {id:"3-4",title:"MDA로 설계 거꾸로 짜기",sub:"느끼게 하고 싶은 감정부터 정하고 메카닉을 고른다",s:[T(["","원하는 미학","생기는 다이내믹스","필요한 메카닉"],[["예1 도전","긴장감 있는 도전","자원이 모자라 선택이 어렵다","에너지 상한 · 회복 제한"],["예2 발견","발견의 즐거움","숨은 길을 찾아 돌아다닌다","가려진 지도 · 숨은 보상"]])],
+  q:[["pdf","[연습] 내가 만들고 싶은 감정 하나를 정하고, 필요한 메카닉을 거꾸로 적어 보기","",
+    "원하는 미학 → 생기는 다이내믹스 → 필요한 메카닉"],["fit","같은 감정을 체감형 메카닉으로만 바꾸면? (예: 긴장 = 발판이 점점 사라짐)"]]},
+ {id:"3-5",title:"플레이어 유형: Bartle",sub:"Richard Bartle이 나눈 네 가지 유형 (1996) · 유형은 도구이지 사람을 가두는 틀이 아니다",s:[T(["유형","즐거움","예"],[["성취형 Achiever","목표 · 레벨 · 업적을 쌓는 것","업적 · 도감 · 랭크 시스템"],["탐험형 Explorer","세계와 규칙을 파고들어 발견하는 것","숨은 요소 · 비밀 지역"],["사교형 Socializer","다른 플레이어와 관계를 맺는 것","길드 · 채팅 · 협동"],["경쟁형 Killer","다른 플레이어를 이기고 영향력을 행사하는 것","대전 · 랭킹 · PvP"]]),T(["활용","한계"],[["타깃 유형을 먼저 정한다","원래 MUD 플레이어를 대상으로 한 분류"],["그 유형이 좋아할 보상을 설계한다","한 사람이 상황에 따라 여러 유형이 된다"],["유형별 콘텐츠가 균형을 이루는지 점검한다","현대 게임을 완전히 설명하지는 못한다"]]),{k:"유형은 설계를 돕는 도구, 정답이 아니다"}],
+  q:[["me","내 유형이 내 기획에 어떤 편향을 주나?"],["me","Bartle을 어디까지 믿고 쓰나? 더 맞다고 보는 분류가 있나?"],["fit","체험관 플레이어 주 타깃 유형 하나와 이유"],["fit","같은 판에 성취형 아이와 사교형 아이가 같이 있으면 누구에게 맞추나?"],["pdf","[연습] 나는 어느 유형에 가까울까? 이유 한 가지를 말해 보기","q3-5-p"]]},
+ {id:"3-6",title:"자기결정이론 (SDT)",sub:"Deci & Ryan이 말한 세 가지 심리적 욕구",s:[T(["욕구","뜻","설계 질문"],[["자율성","스스로 선택하고 있다는 느낌","플레이어가 고르는 것은 무엇인가?"],["유능감","잘하고 있고 성장한다는 느낌","늘었다는 걸 어떻게 보여 주는가?"],["관계성","다른 사람과 연결된다는 느낌","누구와 연결되는가?"]]),{k:"세 욕구가 채워질수록 스스로 하고 싶은 동기가 커진다"}],
+  q:[["me","세 욕구 중 플레이어로서 가장 중요하게 느끼는 것은?"],["me","외적 보상(점수·상품)이 내적 동기를 깎는다는 주장에 대한 생각은?"],["fit","자율성: 선택지가 적은 체감형에서 플레이어가 고르는 것은? (캐릭터·길·난이도·동작)"],["fit","유능감: 짧은 한 판 안에서 '늘었다'를 어떻게 보여 주나?"],["fit","관계성: 누구와 연결되나? (같이 하는 친구·형제·부모·다음 순서 사람)"],["fit","셋 중 체감형에서 가장 중요한 것은?"]]},
+ {id:"3-7",title:"몰입 (Flow)",sub:"Csikszentmihalyi · 도전과 능력이 균형을 이룰 때 몰입한다",s:[T(["상태","조건"],[["불안","도전이 능력보다 크면 불안해진다"],["몰입","도전과 능력이 균형을 이룰 때"],["지루함","능력이 도전보다 크면 지루해진다"]])],
+  q:[["me","몰입이 깨지는 순간 중 가장 싫은 것은? (로딩·설명·억울한 실패)"],["fit","체험관에서 몰입했는지 무엇으로 알아보나? (표정·소리·움직임)"],["fit","몰입 진입까지 허용 시간은?"],["fit","실력 차가 큰 사람들(아이·어른)이 같이 할 때 Flow를 어떻게 맞추나?"]]},
+ {id:"3-8",title:"난이도 곡선과 조절",sub:"계단처럼 오르고 중간에 쉬어 간다",s:[T(["방법","뜻"],[["튜토리얼","새 요소를 하나씩 도입한다"],["난이도 선택","플레이어가 직접 고른다"],["동적 보정","실패가 이어지면 도움을 준다"],["휴식 구간","긴장 뒤에 쉬어 갈 곳을 둔다"]])],
+  q:[["me","동적 보정(몰래 쉬워짐)은 공정한가? 플레이어가 알아도 되나?"],["fit","네 방법 중 아이핏에 맞는 것 / 안 맞는 것"],["fit","체감형의 휴식 구간은 재미 장치인가, 체력 안전장치인가?"],["fit","튜토리얼을 플레이 안에서 하는 방법은? (첫 장애물은 실패 불가 등)"]]},
+ {id:"3-9",title:"유형 × 재미 연결",sub:"플레이어 유형과 재미 유형 이어 보기",s:[T(["Bartle 유형","잘 맞는 재미 (4 Keys)","설계 예"],[["성취형 Achiever","Hard Fun","업적 · 단계별 목표"],["탐험형 Explorer","Easy Fun","숨은 요소 · 넓은 지도"],["사교형 Socializer","People Fun","협동 콘텐츠 · 길드"],["경쟁형 Killer","Hard Fun + People Fun","랭킹 · 대전"]])],
+  q:[["pdf","[연습] 내 게임의 타깃 유형과 그 유형이 좋아할 재미를 연결해 보기"]]},
+ {id:"3-10",title:"실습: 내 게임의 타깃 정의",sub:"네 칸을 채우고 한 문장으로 말해 보기",s:[T(["칸","기준"],[["주 타깃 유형","Bartle"],["중심 재미","4 Keys · 미학"],["채워 줄 욕구","SDT"],["목표 난이도","Flow"]]),{p:"채우는 법: 유형은 하나만 고른다 · 이유를 한 줄로 적는다 · 문장으로 말해 본다"}],
+  q:[["pdf","[실습] 네 칸 채우기: 주 타깃 유형 / 중심 재미 / 채워 줄 욕구 / 목표 난이도 (각 이유 한 줄)"],["pdf","[문장] 내 게임은 ___ 유형에게 ___ 재미를 주기 위해 ___ 한다"]]}
+]},
+{no:"4",title:"사례 분석 · 실습 · 정리",topics:[
+ {id:"4-1",title:"사례 분석: 게임 2개 해체",sub:"게임 2개를 같은 틀로 해체하기 (15분)",s:[T(["순서","할 일","시간"],[["1","코어 메카닉(동사)과 코어 루프 분해","4분"],["2","메타 루프와 보상 구조 찾기","3분"],["3","재미 유형과 플레이어 유형 분류","3분"],["4","두 게임 비교","5분"]]),{p:"분석 대상: 학생이 고른 게임 · 강사가 제시한 게임 / 비교 기준: 루프 길이 · 피드백 속도 · 보상 방식"},
+  T(["예시 답안","슬레이 더 스파이어","클래시 로얄"],[["코어 메카닉","카드 사용","카드 배치"],["코어 루프","카드 드로우(적 의도 확인) → 카드 사용(에너지 소모) → 적 턴(피해 처리) → 승리 보상(카드·유물) → 덱 변화(다음 전투로) · 루프 = 한 번의 전투","덱 구성(카드 8장 고르기) → 대전(엘릭서로 카드 배치) → 승패·상자(보상 획득) → 카드 강화(다음 대전 준비) → 다음 대전 · 루프 = 한 번의 대전"],["메타 루프","층 진행 → 보스, 런 종료 후 언락","트로피 · 아레나 진행, 카드 수집 · 강화"],["재미","Hard Fun 중심","Hard Fun + People Fun"],["플레이어","성취형 · 탐험형이 좋아함","경쟁형 · 성취형이 좋아함"]]),
+  {p:"분석 템플릿 항목: 코어 메카닉(동사) / 코어 루프 / 메타 루프 / 중심 재미 / 타깃 플레이어 / 피드백 특징"}],
+  q:[["pdf","게임 A (내가 고른 게임): 코어 메카닉(동사) / 코어 루프 / 메타 루프 / 중심 재미 / 타깃 플레이어 / 피드백 특징"],["pdf","게임 B (강사 제시): 같은 6칸"],["pdf","두 게임 비교: 루프 길이 / 피드백 속도 / 보상 방식"],["fit","(추가 제안) 게임 B 자리에 정글 보물 탐험대를 넣어 같은 6칸으로 분석","q4-1-j"]]},
+ {id:"4-2",title:"실습: 코어 루프 도식화",sub:"내 프로젝트(또는 좋아하는 게임) 하나를 골라 한 장으로 (10분)",s:[{k:"행동 → 반응 → 보상 → 다음 동기"},T(["작성 규칙"],[["코어 메카닉(동사) 한 단어 적기"],["5단계 이내"],["화살표로 흐름 표시"],["보상이 나오는 지점 표시"],["2분 발표: 반복되는 이유는?"]])],
+  q:[["pdf","[실습] 내 프로젝트(또는 좋아하는 게임) 하나를 골라 코어 루프를 한 장으로 도식화 · 2분 발표: 반복되는 이유는?"]]},
+ {id:"4-3",title:"흔한 실수 네 가지",sub:"오늘 배운 개념에서 자주 틀리는 부분",s:[T(["실수","왜 문제인가 → 고치는 법"],[["메카닉과 루프를 섞어 쓴다","메카닉은 행동 한 번, 루프는 그 행동의 반복 → 동사 한 단어와 사이클을 따로 쓴다"],["재미를 \"그냥 재밌다\"로 끝낸다","이유를 개념 언어로 말하지 못한다 → 4 Keys · 미학 용어로 이유를 말한다"],["타깃을 \"모든 사람\"으로 잡는다","기준이 없어져 설계가 흔들린다 → 유형 하나를 고르고 이유를 적는다"],["루프가 길어져 설명이 안 된다","단계가 많아 핵심이 보이지 않는다 → 5단계 이내로 줄여서 그린다"]])],
+  q:[["me","내가 가장 잘 빠지는 실수는?"],["fit","체험관에는 '모든 사람'이 오는데, 그래도 타깃 하나를 고르는 게 맞나?"]]},
+ {id:"4-4",title:"확인 문제 O / X",sub:"오늘 배운 내용을 한 줄씩 확인하기",s:[T(["번호","문장"],[["1","코어 메카닉은 플레이어가 세우는 장기 목표이다."],["2","피드백은 보상성일 때만 의미가 있다."],["3","같은 게임도 플레이어 유형에 따라 중심 재미가 다를 수 있다."],["4","몰입은 도전이 능력보다 훨씬 클 때 가장 잘 생긴다."],["5","타깃은 \"모든 사람\"으로 넓게 잡는 것이 좋다."]])],
+  q:[["pdf","1~5번 O/X와 각각의 이유 한 줄"]]},
+ {id:"4-5",title:"오늘의 핵심 5가지",s:[T(["개념","한 줄"],[["메카닉","핵심 행동 한 번"],["루프","행동의 반복 사이클"],["피드백","결과를 알려 주고 이어 준다"],["재미","도전 · 탐험 · 교류 · 의미"],["플레이어","유형 · 동기 · 몰입"]]),{k:"정리: 구조가 재미를 만들고, 재미는 플레이어에 따라 달라진다"}],
+  q:[["me","이 정리 문장을 내 말로 바꾸면?"],["pdf","[오늘의 한 문장 · 빈칸을 채우고 마지막에 타깃 플레이어 유형 덧붙이기] 내 게임의 코어 메카닉은 ___이고, 코어 루프는 ___, 재미는 ___ 유형이다. 타깃은 ___."]]},
+ {id:"4-6",title:"과제와 다음 회차",s:[T(["과제","내용"],[["과제 1","대표작 코어 메카닉 · 루프 도식 다듬어 제출 (메카닉 한 단어 · 5단계 이내 · 타깃 플레이어 유형 한 줄)"],["과제 2","최근 플레이한 게임 분석 노트 A4 반 장 (코어 메카닉 / 코어 루프 / 메타 루프 / 재미 유형 / 플레이어 유형)"],["다음 회차","2회차 규칙과 시스템: 시스템 사고 · 피드백 루프 · 창발성 · 의미 있는 선택"]]),{p:"과제는 맨 아래 6. 숙제에서 작성합니다."}],
+  q:[]}
+]},
+{no:"5",title:"나의 기획 판단 기준",topics:[
+ {id:"5",title:"AI에게 줄 기준",s:[{p:"강의에 없는 페이지입니다. 여기 답은 AI가 내 기획을 볼 때 쓰는 기준으로 바로 옮겨집니다."}],
+  q:[["me","좋은 기획인지 판단하는 나만의 테스트는? (예: 아이에게 한 문장으로 설명되나)"],["me","재미 vs 일정 vs 회사 요구가 부딪히면 우선순위는?"],["me","위 이론 중 AI가 내 기획을 볼 때 반드시 체크해 줬으면 하는 항목 3개는?"],["me","AI가 내 의견에 반대해도 되는 영역 / 내 결정을 따라야 하는 영역은?"]]}
+]},
+{no:"6",title:"숙제",hw:true,topics:[
+ {id:"6-1",title:"과제 1 · 대표작 코어 메카닉 · 루프 도식",sub:"조건(강의 원문): 메카닉 한 단어 · 5단계 이내 · 타깃 플레이어 유형 한 줄",s:[T(["도식 표기","뜻"],[["행동","플레이어 행동"],["시스템","반응 · 보상"],["→","다음 단계로"],["★","보상이 나오는 지점"]])],
+  q:[["hw","대표작 이름","hw1-name"],["hw","코어 메카닉 (동사 한 단어)","hw1-verb"],["hw","타깃 플레이어 유형 (한 줄)","hw1-target"],["hw","코어 루프 도식 (5단계 이내)","hw1-loop","한 줄에 한 단계씩: 1 행동 → 2 반응 → 3 보상★ → 4 다음 동기 → (5). 각 단계 끝에 (행동) / (시스템) 표시"],["hw","반복되는 이유는? (2분 발표용)","hw1-why"],["me","한 바퀴가 끝나면 또 하고 싶은가? 아니라면 루프가 망가지는 4가지(너무 길다·보상이 약하다·변주가 없다·보상이 행동과 무관) 중 어디에 걸리나?","hw1-check"],["me","수업 전 도식과 비교해 무엇을 다듬었나?","hw1-diff"]]},
+ {id:"6-2",title:"과제 2 · 최근 플레이한 게임 분석 노트 (A4 반 장)",sub:"항목(강의 원문): 코어 메카닉 / 코어 루프 / 메타 루프 / 재미 유형 / 플레이어 유형",s:[{p:"각 칸에 분석 + 근거(개념 언어)를 함께 쓰기."}],
+  q:[["hw","게임 이름","hw2-name"],["hw","코어 메카닉 (동사) + 근거","hw2-verb"],["hw","코어 루프 (5단계 이내) + 근거","hw2-loop"],["hw","메타 루프 + 근거","hw2-meta"],["hw","재미 유형 (4 Keys · 미학) + 근거","hw2-fun"],["hw","플레이어 유형 (Bartle) + 근거","hw2-player"],["me","(선택) 피드백 특징: 즉각/지연 · 정보성/보상성","hw2-fb"],["me","(선택) 채워 주는 욕구 (SDT)","hw2-sdt"],["me","(선택) 난이도 조절 방식 (Flow)","hw2-flow"],["hw","노트 본문 (A4 반 장)","hw2-body","위 칸을 문장으로 풀어 쓰기. 마지막 줄: 이 게임의 코어 메카닉은 ___이고, 코어 루프는 ___, 재미는 ___ 유형이다. 타깃은 ___."]]},
+ {id:"6-3",title:"제출 전 점검 — 흔한 실수 네 가지",s:[T(["점검","확인"],[["메카닉(동사 한 단어)과 루프(사이클)를 따로 썼다","□"],["재미를 \"그냥 재밌다\"가 아니라 4 Keys · 미학 용어로 설명했다","□"],["타깃을 \"모든 사람\"이 아니라 유형 하나로 고르고 이유를 썼다","□"],["루프를 5단계 이내로 줄였다","□"]]),{k:"다음 회차 · 2회차 규칙과 시스템: 시스템 사고 · 피드백 루프 · 창발성 · 의미 있는 선택"}],
+  q:[]}
+]}
+];
+const LABEL={pdf:"강의 원문",me:"나의 생각",fit:"아이핏 적용",hw:"숙제"};
+FULL.forEach(c=>c.topics.forEach(t=>{let n=0;t.q=t.q.map(q=>{const fixed=q[2];if(!fixed)n++;return{kind:q[0],text:q[1],id:fixed||("q"+t.id+"-"+n),hint:q[3]||""}})}));
+// 탭 두 개: 강의 원문 질문(pdf 질문만) / 1회차 숙제(6장)
+const VIEWS={
+  pdf:{title:"강의 원문 질문만 모아 보기",lead:"1회차 PDF의 연습 · 핵심 질문 · 실습만 모았습니다. 주제마다 강의 정리를 같이 두었으니 읽고 바로 답을 적어 보세요.",
+    data:FULL.filter(c=>!c.hw).map(c=>({...c,topics:c.topics.map(t=>({...t,q:t.q.filter(q=>q.kind==="pdf")})).filter(t=>t.q.length)})).filter(c=>c.topics.length)},
+  hw:{title:"1회차 숙제",lead:"과제 1 · 대표작 코어 메카닉 · 루프 도식, 과제 2 · 최근 플레이한 게임 분석 노트(A4 반 장). 다 쓰고 제출 전 점검까지 확인하세요.",
+    data:FULL.filter(c=>c.hw)}
+};
+let view="pdf",DATA=[],ALL=[];
+const answers={};
+
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+function sumHTML(s){
+  if(s.t) return `<div class="tbl"><table><thead><tr>${s.t.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r=>`<tr>${r.map(d=>`<td>${esc(d)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  if(s.k) return `<p class="key">${esc(s.k)}</p>`;
+  return `<p>${esc(s.p)}</p>`;
+}
+function render(){
+  document.getElementById("main").innerHTML=DATA.map(c=>`
+    <section class="chapter${c.hw?" homework":""}" id="ch${c.no}">
+      <div class="ch-head"><span class="ch-no">CH.${c.no}</span><h2>${esc(c.title)}</h2></div>
+      ${c.topics.map(t=>`
+      <article class="topic" data-topic="${t.id}">
+        <div class="t-head"><div class="t-row"><span class="t-id">${t.id}</span><h3>${esc(t.title)}</h3></div>${t.sub?`<p class="t-sub">${esc(t.sub)}</p>`:""}</div>
+        <div class="summary">${t.s.map(sumHTML).join("")}</div>
+        <div class="qs">${t.q.map(q=>`<div class="q" data-q="${q.id}"><label class="q-top" for="${q.id}"><span class="tag ${q.kind}">${LABEL[q.kind]}</span><span class="q-text">${esc(q.text)}</span></label>${q.hint?`<p class="q-hint">${esc(q.hint)}</p>`:""}<textarea id="${q.id}" class="${/body|loop/.test(q.id)&&q.kind==="hw"?"long":""}" rows="2" placeholder="생각나는 대로 적어 두고 나중에 다듬어도 됩니다"></textarea></div>`).join("")}</div>
+      </article>`).join("")}
+    </section>`).join("");
+}
+function refresh(){
+  let done=0;
+  ALL.forEach(q=>{const v=(answers[q.id]||"").trim();document.querySelector(`[data-q="${q.id}"]`).classList.toggle("done",!!v);if(v)done++;});
+  document.querySelectorAll(".topic").forEach(t=>{const qs=[...t.querySelectorAll(".q")];t.classList.toggle("all-done",qs.length>0&&qs.every(q=>q.classList.contains("done"))||qs.length===0)});
+  document.getElementById("count").textContent=`${done} / ${ALL.length}`;
+  document.getElementById("fill").style.width=(done/ALL.length*100)+"%";
+  document.getElementById("toc").innerHTML=DATA.map(c=>{const qs=c.topics.flatMap(t=>t.q);const d=qs.filter(q=>(answers[q.id]||"").trim()).length;
+    return `<a href="#ch${c.no}" class="${d===qs.length?"full":""}${c.hw?" hw":""}"><span>${c.no}. ${esc(c.title)}</span><span class="n">${d}/${qs.length}</span></a>`}).join("");
+}
+function setView(v){
+  view=VIEWS[v]?v:"pdf";
+  const V=VIEWS[view];DATA=V.data;ALL=DATA.flatMap(c=>c.topics.flatMap(t=>t.q));
+  document.getElementById("h1").textContent=V.title;
+  document.getElementById("lead").textContent=V.lead;
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.view===view));
+  render();
+  ALL.forEach(q=>{document.getElementById(q.id).value=answers[q.id]||""});
+  refresh();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+  if(b.dataset.view===view)return;
+  history.replaceState(null,"","#"+b.dataset.view);setView(b.dataset.view);window.scrollTo(0,0);
+}));
+setView(location.hash.slice(1));
+
+const saveEl=document.getElementById("save");
+// 공유 저장: Supabase의 study_answers(page, qid, body)가 기준(링크 가진 사람 모두 같이 고침).
+// config.js가 비었거나 서버가 안 되면 이 브라우저(localStorage)에만 저장
+const CFG=window.STUDY_CONFIG||{};
+const PAGE="round1";
+let online=false;const timers={},chain={},pending=new Set();
+const LS="study-round1-v1";
+function lsLoad(){try{return JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){return{}}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify(answers))}catch(e){}}
+Object.assign(answers,lsLoad());
+setView(view);
+
+async function api(path,{method="GET",body,prefer}={}){
+  const headers={apikey:CFG.supabaseAnonKey,"Content-Type":"application/json"};
+  // 예전 anon 키(JWT)는 Authorization 헤더도 필요, 새 publishable 키는 apikey만
+  if(!CFG.supabaseAnonKey.startsWith("sb_"))headers.Authorization="Bearer "+CFG.supabaseAnonKey;
+  if(prefer)headers.Prefer=prefer;
+  const res=await fetch(`${CFG.supabaseUrl.replace(/\/$/,"")}/rest/v1/${path}`,{method,headers,body:body?JSON.stringify(body):undefined});
+  if(!res.ok)throw new Error(`${res.status} ${await res.text()}`);
+  return res.status===204?null:res.json().catch(()=>null);
+}
+const fetchAll=()=>api(`study_answers?page=eq.${PAGE}&select=qid,body`);
+// 같은 질문은 한 번에 하나씩만 저장
+function push(id){
+  chain[id]=(chain[id]||Promise.resolve()).then(async()=>{
+    try{await api("study_answers?on_conflict=page,qid",{method:"POST",prefer:"resolution=merge-duplicates,return=minimal",body:[{page:PAGE,qid:id,body:answers[id]||""}]});return true}
+    catch(err){saveEl.textContent="저장 실패 · 이 브라우저에는 남아 있음";return false}
+  });
+  return chain[id];
+}
+// 다른 사람이 고친 답 반영. 내가 지금 쓰는 칸은 건드리지 않음
+function apply(id,t){
+  if(typeof t!=="string"||answers[id]===t)return;
+  const el=document.getElementById(id);
+  if(pending.has(id)||(el&&document.activeElement===el))return;
+  answers[id]=t;if(el)el.value=t;
+}
+
+document.getElementById("main").addEventListener("input",e=>{
+  const ta=e.target;if(ta.tagName!=="TEXTAREA")return;
+  answers[ta.id]=ta.value;lsSave();refresh();
+  if(!online)return;
+  const id=ta.id;
+  saveEl.textContent="저장 중…";pending.add(id);
+  clearTimeout(timers[id]);
+  const h=setTimeout(async()=>{
+    const ok=await push(id);
+    if(timers[id]!==h)return; // 저장하는 사이 또 입력함
+    pending.delete(id);
+    if(ok)saveEl.textContent="저장됨 · 같이 보는 사람에게 반영";
+  },900);
+  timers[id]=h;
+});
+
+(async()=>{
+  if(!(CFG.supabaseUrl&&CFG.supabaseAnonKey)){saveEl.textContent="이 브라우저에만 저장";return}
+  try{
+    const rows=await fetchAll();
+    const seen=new Set();
+    rows.forEach(r=>{seen.add(r.qid);apply(r.qid,r.body)});
+    online=true;lsSave();refresh();
+    // 이 브라우저에만 있던 답은 공유 저장소로 올림
+    const shown=Object.values(VIEWS).flatMap(V=>V.data.flatMap(c=>c.topics.flatMap(t=>t.q)));
+    for(const q of shown){if(!seen.has(q.id)&&(answers[q.id]||"").trim())await push(q.id)}
+  }catch(e){saveEl.textContent="이 브라우저에만 저장 · 서버 연결 안 됨";return}
+  saveEl.textContent="같이 쓰기 켜짐";
+  // 다른 사람이 고친 내용은 몇 초마다 확인 (이 탭을 보고 있을 때만)
+  setInterval(async()=>{
+    if(document.visibilityState!=="visible")return;
+    try{(await fetchAll()).forEach(r=>apply(r.qid,r.body));lsSave();refresh()}catch(e){}
+  },4000);
+})();
+
+const fb=document.getElementById("filter");
+fb.addEventListener("click",()=>{const on=fb.getAttribute("aria-pressed")!=="true";fb.setAttribute("aria-pressed",on);document.body.classList.toggle("only-empty",on)});
+
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2200)}
+function markdown(){
+  let md=`# ${VIEWS[view].title}\n\n`;
+  DATA.forEach(c=>{md+=`## ${c.no}. ${c.title}\n\n`;c.topics.forEach(t=>{md+=`### ${t.id} ${t.title}\n\n`+(t.sub?t.sub+"\n\n":"");
+    t.s.forEach(s=>{if(s.t){md+="| "+s.t.join(" | ")+" |\n|"+s.t.map(()=>"---").join("|")+"|\n"+s.rows.map(r=>"| "+r.join(" | ")+" |").join("\n")+"\n\n"}else md+=(s.k?"> ":"")+(s.k||s.p)+"\n\n"});
+    t.q.forEach(q=>{const a=(answers[q.id]||"").trim();md+=`- [${a?"x":" "}] **${LABEL[q.kind]}** ${q.text}\n`+(a?"  "+a.replace(/\n/g,"\n  ")+"\n":"")});md+="\n";})});
+  return md;
+}
+function notionHTML(){
+  let h=`<h1>${esc(VIEWS[view].title)}</h1>`;
+  DATA.forEach(c=>{h+=`<h1>${c.no}. ${esc(c.title)}</h1>`;c.topics.forEach(t=>{h+=`<h2>${esc(t.id)} ${esc(t.title)}</h2>`+(t.sub?`<p>${esc(t.sub)}</p>`:"");
+    t.s.forEach(s=>{
+      if(s.t) h+=`<table><thead><tr>${s.t.map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r=>`<tr>${r.map(d=>`<td>${esc(d)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+      else if(s.k) h+=`<blockquote>${esc(s.k)}</blockquote>`;
+      else h+=`<p>${esc(s.p)}</p>`;
+    });
+    if(t.q.length) h+="<h3>질문</h3>";
+    t.q.forEach(q=>{const a=(answers[q.id]||"").trim();
+      h+=`<p><strong>[${LABEL[q.kind]}] ${esc(q.text)}</strong></p>`;
+      h+=a?`<blockquote>${a.split("\n").map(esc).join("<br>")}</blockquote>`:`<blockquote>(아직 안 씀)</blockquote>`;
+    });
+    h+="<hr>";
+  })});
+  return h;
+}
+document.getElementById("copy").addEventListener("click",async()=>{
+  const html=notionHTML(),md=markdown();
+  const ok="복사했습니다. 노션 새 페이지에 붙여 넣으세요";
+  const onCopy=e=>{e.clipboardData.setData("text/html",html);e.clipboardData.setData("text/plain",md);e.preventDefault()};
+  document.addEventListener("copy",onCopy);
+  let done=false;try{done=document.execCommand("copy")}catch(e){}
+  document.removeEventListener("copy",onCopy);
+  if(done){toast(ok);return}
+  try{await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([md],{type:"text/plain"})})]);toast(ok)}
+  catch(e){toast("복사가 막혔습니다. 브라우저에서 열어 다시 시도하세요")}
+});
+</script>
+
+</body></html>
